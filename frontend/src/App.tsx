@@ -2,22 +2,26 @@
 import './App.css'
 import { BrowserRouter,Route,Routes } from 'react-router-dom'
 import  Signup  from './pages/signup'
+import { Navigate } from "react-router-dom"
 import  Signin  from './pages/signin'
-import { BlogFeed } from './pages/blog'
-import { BlogReadingPage } from './pages/readPost'
-import { BlogEditor } from './pages/writePost'
+import { Blog } from './pages/Blog'
+import { Blogs } from "./pages/Blogs";
+import { Publish } from './pages/Publish';
+
 function App() {
 
   return (
     <>
       <BrowserRouter>
       <Routes>
-        <Route path='/signup' element={<Signup></Signup>}>
-         </Route>
+        <Route path='/' element={<Navigate to="/signup"></Navigate>}>
+        </Route>
+      <Route path="/signup" element={<Signup />} />
+     
         <Route path='/signin' element={<Signin></Signin>}></Route>
-         <Route path='/blogfeed' element={<BlogFeed></BlogFeed>}></Route>
-         <Route path='/readpost' element={<BlogReadingPage></BlogReadingPage>}></Route>
-         <Route path='/writepost' element={<BlogEditor></BlogEditor>}></Route>
+        <Route path="/blogs/:id" element={<Blog />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/publish" element={<Publish />} /> 
           </Routes>
           </BrowserRouter>
     </>

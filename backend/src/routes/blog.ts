@@ -13,20 +13,30 @@ export const blogRouter = new Hono<{
   }
 }>()
 
+
+
+
+
 // 🔐 protect all blog routes
 blogRouter.use('/*', async (c, next) => {
-  const auth = c.req.header('Authorization')
+  try{
+  const auth = c.req.header('authorization')||
+  c.req.header("Authorization")
   if (!auth) return c.json({ error: 'unauthorized' }, 401)
 
   const token = auth.split(' ')[1]
-  const payload = await verify(token, c.env.JWT_SECRET, 'HS256') as { id: string }
+  const payload = await verify(token, c.env.JWT_SECRET,"HS256") as { id: string }
 
   c.set('userId', payload.id)
   await next()
+} catch(err){
+  return c.json({error:"invalid token"},401)
+}
 })
 
 // CREATE BLOG
 blogRouter.post('/', async (c) => {
+  try{
   const body = await c.req.json()
   const prisma = getPrisma(c.env.PRISMA_ACCELERATE_URL)
 
@@ -45,7 +55,10 @@ blogRouter.post('/', async (c) => {
     }
   })
 
-  return c.json(post)
+  return c.json({post})
+}catch{
+  return c.json({error:"error posting the blog"},403)
+}
 })
 
 // UPDATE BLOG (only own post)
@@ -73,7 +86,31 @@ blogRouter.put('/', async (c) => {
     data: { title:body.title, content:body.content }
   })
 
-  return c.json(updated)
+  return c.json({updated})
+})
+
+blogRouter.get('/bulk',async (c)=>{
+  try{
+  const prisma=getPrisma(c.env.PRISMA_ACCELERATE_URL)
+
+  const posts=await prisma.post.findMany({
+    select: {
+            content: true,
+            title: true,
+            id: true,
+            author: {
+                select: {
+                    name: true
+                }
+            }
+        }
+  });
+  return c.json({
+    posts
+  })
+}catch(err){
+  console.log("error found in here",err);
+}
 })
 
 // GET BLOG BY ID
@@ -81,8 +118,19 @@ blogRouter.get('/:id', async (c) => {
   const prisma = getPrisma(c.env.PRISMA_ACCELERATE_URL)
 
   const post = await prisma.post.findUnique({
-    where: { id: c.req.param('id') }
+    where: { id: c.req.param('id') },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
   })
 
-  return c.json(post)
+  return c.json({post})
 })
+

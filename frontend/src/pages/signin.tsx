@@ -4,27 +4,28 @@ import photo from '../assets/photo.jpg';
 import avatar from '../assets/avatar.jpg';
 import { useState } from 'react';
 import axios from 'axios'
-const Signin = () => {
-  const [email,setEmail]=useState("");
-  const [password,setPassword]=useState("");
+import { signinInput, type SigninType } from 'pallavi-common';
+const Signin = (type:"signin") => {
   const navigate=useNavigate()
+  const [postInputs,setPostInputs]=useState<SigninType>({
+      email:"",
+      password:""
+  })
   const signinHandler=async(e:React.FormEvent)=>{
     e.preventDefault()
+    const parsed = signinInput.safeParse(postInputs);
+    if (!parsed.success) {
+      alert(parsed.error.issues[0].message);
+      return;
 
+    }
     try{
-      const response=await axios.post("http://127.0.0.1:8787/api/v1/user/signin",
-        {
-          email,
-          password
-        },{
-          headers:{
-            "Content-Type":"application/json"
-          }
-        }
-      )
-      console.log(response.data)
-      alert("signin success")
-      navigate("\blogfeed")
+      const response=await axios.post("https://backend.singhpallavi8195.workers.dev/api/v1/user/signin",
+        postInputs
+      );
+      localStorage.setItem("token",response.data.token)
+      navigate("/blogs")
+      
     }
     catch(err:any){
       console.log(err.response.data)
@@ -103,8 +104,8 @@ const Signin = () => {
                   <Mail className="absolute left-0 top-3 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={20} />
                   <input
                     type="email"
-                    value={email}
-                    onChange={(e)=>setEmail(e.target.value)}
+                    onChange={(e)=>{setPostInputs({...postInputs,email:e.target.value})
+                  }}
                     placeholder="you@example.com"
                     className="w-full bg-transparent border-b-2 border-slate-100 py-3 pl-8 text-slate-900 focus:border-indigo-600 transition-all outline-none"
                   />
@@ -121,8 +122,9 @@ const Signin = () => {
                   <input
                     type="password"
                     placeholder="Enter your password"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
+                    
+                    onChange={(e)=>{setPostInputs({...postInputs,password:e.target.value})
+                  }}
                     className="w-full bg-transparent border-b-2 border-slate-100 py-3 pl-8 text-slate-900 focus:border-indigo-600 transition-all outline-none"
                   />
                 </div>

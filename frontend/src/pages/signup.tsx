@@ -1,32 +1,36 @@
 import { Link,useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight, Quote } from 'lucide-react';
+import { signupInput, type SignupType } from 'pallavi-common';
 import photo from '../assets/photo.jpg';
 import avatar from '../assets/avatar.jpg';
 import { useState } from 'react';
 import axios from "axios"
 
 
-const Signup = () => {
-  const [password,setPassword]=useState("");
-const [email,setEmail]=useState("");
-const navigate=useNavigate()
-const signupHandler=async(e:React.FormEvent)=>{
-  e.preventDefault();
-  console.log({email,password})
-  try{
-    
-  const response=await axios.post("http://127.0.0.1:8787/api/v1/user/signup",{
-    email,
-    password
-  },{
-    headers:{
-      "Content-Type":"application/json"
-    }
-  }
-  )
-  console.log(response.data)
+const Signup = (type:"signup") => {
   
-  alert("signup success")
+const navigate=useNavigate()
+const [postInputs,setPostInputs]=useState<SignupType>({
+  name:undefined,
+  email:"",
+  password:""
+
+})
+async function signupHandler(e:React.FormEvent){
+  e.preventDefault();
+  const parsed = signupInput.safeParse(postInputs);
+
+  if (!parsed.success) {
+    alert(parsed.error.issues[0].message);
+    return;
+  }
+    
+    try{
+  const response=await axios.post("https://backend.singhpallavi8195.workers.dev/api/v1/user/signup",postInputs);
+  
+
+  localStorage.setItem("token",response.data.token);
+  localStorage.setItem("username",postInputs.name||"User")
   navigate("/signin")
   }
   catch(err:any){
@@ -98,6 +102,21 @@ const signupHandler=async(e:React.FormEvent)=>{
 
             <form className="space-y-6" onSubmit={signupHandler}>
 
+              {/* name */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold uppercase tracking-widest text-slate-400">Full Name</label>
+                <div className="relative group">
+                  <User className="absolute left-0 top-3 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={20} />
+                  <input
+                    type="text"
+                    placeholder="John Doe"
+                    onChange={(e)=>{setPostInputs({...postInputs, name:e.target.value === "" ? undefined : e.target.value})
+                  }}
+                    className="w-full bg-transparent border-b-2 border-slate-100 py-3 pl-8 text-slate-900 focus:border-indigo-600 transition-all outline-none"
+                  />
+                </div>
+              </div>
+
               {/* Email */}
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold uppercase tracking-widest text-slate-400">Email Address</label>
@@ -106,8 +125,8 @@ const signupHandler=async(e:React.FormEvent)=>{
                   <input
                     type="email"
                     placeholder="name@email.com"
-                    value={email}
-                    onChange={(e)=>setEmail(e.target.value)}
+                    onChange={(e)=>{setPostInputs({...postInputs, email:e.target.value})
+                  }}
                     className="w-full bg-transparent border-b-2 border-slate-100 py-3 pl-8 text-slate-900 focus:border-indigo-600 transition-all outline-none"
                   />
                 </div>
@@ -121,8 +140,8 @@ const signupHandler=async(e:React.FormEvent)=>{
                   <input
                     type="password"
                     placeholder="••••••••"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
+                    onChange={(e)=>{setPostInputs({...postInputs,password:e.target.value})
+                  }}
                     className="w-full bg-transparent border-b-2 border-slate-100 py-3 pl-8 text-slate-900 focus:border-indigo-600 transition-all outline-none"
                   />
                 </div>

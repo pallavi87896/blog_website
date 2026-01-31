@@ -43,13 +43,14 @@ userRouter.post('/signup', async (c) => {
       
       data:{
         email:body.email,
+        name:body.name,
         passwordHash:toBase64(hash),
         passwordSalt:toBase64(salt),
       },
     });
 
     
-    const token=await sign({id:user.id},c.env.JWT_SECRET);
+    const token=await sign({id:user.id},c.env.JWT_SECRET,"HS256")
     return c.json({
       msg:"signup successful",
       token})
@@ -84,7 +85,7 @@ userRouter.post('/signin', async (c) => {
     return c.json({error:"invalid cred"},401)
   }
 
-  const token=await sign({id:user.id },c.env.JWT_SECRET);
+  const token=await sign({id:user.id },c.env.JWT_SECRET,"HS256");
   return c.json({token,
     msg:"signin successful"
   })

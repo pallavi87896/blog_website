@@ -1,14 +1,1 @@
 @import "tailwindcss";
-@media (min-width: 360px) {
-  .xs-text {
-    font-size: 11px;
-  }
-
-  .xs-padding {
-    padding: 8px !important;
-  }
-
-  .xs-hide {
-    display: none;
-  }
-}
