@@ -4,10 +4,16 @@ import axios from 'axios'
 export interface Blog {
     "content":string;
     "title":string;
-    "id":string
+    "id":string;
+    "createdAt":string;
+    "updatedAt":string;
+    "authorId":string;
     "author":{
         "name":string
-    }
+    };
+    "_count":{
+    likes:number;
+    };
 }
 
 export const useBlog=({id}:{id:string})=>{
@@ -32,12 +38,14 @@ export const useBlog=({id}:{id:string})=>{
     }
 }
 
-export const useBlogs=()=>{
+export const useBlogs=(search:string)=>{
     const [loading,setLoading]=useState(true);
     const [blogs,setBlogs]=useState<Blog[]>([]);
 
     useEffect(()=>{
+        setLoading(true)
         axios.get(`https://backend.singhpallavi8195.workers.dev/api/v1/blogs/bulk`,{
+            params:{ search },
             headers:{
                 Authorization:`Bearer ${localStorage.getItem("token")}`
             }
@@ -46,10 +54,37 @@ export const useBlogs=()=>{
             setBlogs(response.data.posts ||[]);
             setLoading(false);
         })
-    },[])
+    },[search])
 
     return {
         loading,
         blogs
     }
+}
+
+export const useBookmarks=()=>{
+    const [loading,setLoading]=useState(true);
+    const [bookmarks,setBookmarks]= useState<Blog[]>([]);
+
+    useEffect(()=>{
+        axios.get(
+      "https://backend.singhpallavi8195.workers.dev/api/v1/blogs/bookmarks",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .then((res)=>{
+        const posts=res.data.bookmarks.map((b:any)=>b.post);
+        setBookmarks(posts);
+        setLoading(false);
+    })
+    .catch(()=>{
+        setBookmarks([]);
+        setLoading(false);
+    })
+    },[])
+    return { loading,bookmarks}
+
 }

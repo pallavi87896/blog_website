@@ -5,7 +5,7 @@ import avatar from '../assets/avatar.jpg';
 import { useState } from 'react';
 import axios from 'axios'
 import { signinInput, type SigninType } from 'pallavi-common';
-const Signin = (type:"signin") => {
+const Signin = () => {
   const navigate=useNavigate()
   const [postInputs,setPostInputs]=useState<SigninType>({
       email:"",

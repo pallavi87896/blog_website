@@ -10,7 +10,7 @@ export const Publish = () => {
     const navigate = useNavigate();
 
     return <div>
-        <AppBar />
+        <AppBar/>
         <div className="flex justify-center w-full pt-8"> 
             <div className="max-w-screen-lg w-full">
                 <input onChange={(e) => {
@@ -29,7 +29,7 @@ export const Publish = () => {
                             Authorization: `Bearer ${localStorage.getItem("token")}`
                         }
                     });
-                    navigate(`/blogs/${response.data.id}`)
+                    navigate(`/blogs/${response.data.post.id}`)
                 }} type="submit" className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                     Publish post
                 </button>

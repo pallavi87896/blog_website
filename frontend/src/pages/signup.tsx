@@ -7,7 +7,7 @@ import { useState } from 'react';
 import axios from "axios"
 
 
-const Signup = (type:"signup") => {
+const Signup = () => {
   
 const navigate=useNavigate()
 const [postInputs,setPostInputs]=useState<SignupType>({
@@ -63,7 +63,7 @@ async function signupHandler(e:React.FormEvent){
             </div>
 
             <h1 className="text-5xl font-serif font-bold text-white leading-tight tracking-tight mb-6">
-              Design <br /> Perspectives.
+              Creative <br /> Rebel
             </h1>
 
             {/* Elegant Divider */}
