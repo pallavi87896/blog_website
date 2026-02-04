@@ -5,6 +5,7 @@ import photo from '../assets/photo.jpg';
 import avatar from '../assets/avatar.jpg';
 import { useState } from 'react';
 import axios from "axios"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 
 const Signup = () => {
@@ -26,7 +27,7 @@ async function signupHandler(e:React.FormEvent){
   }
     
     try{
-  const response=await axios.post("https://backend.singhpallavi8195.workers.dev/api/v1/user/signup",postInputs);
+  const response=await axios.post(`${BACKEND_URL}/api/v1/user/signup`,postInputs);
   
 
   localStorage.setItem("token",response.data.token);

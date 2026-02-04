@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Heart, MessageCircle, Bookmark } from "lucide-react";
 import axios from "axios";
 import { useState } from "react";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 interface BlogCardProps {
   id: string;
@@ -38,7 +39,7 @@ export const BlogCard = ({
     e.stopPropagation();
     try {
       const res = await axios.post(
-        `https://backend.singhpallavi8195.workers.dev/api/v1/blogs/${id}/like`,
+        `${BACKEND_URL}/api/v1/blogs/${id}/like`,
         {},
         {
           headers: {
@@ -60,7 +61,7 @@ export const BlogCard = ({
     try {
       // Assuming your backend has a bookmark endpoint
       await axios.post(
-        `https://backend.singhpallavi8195.workers.dev/api/v1/blogs/${id}/bookmark`,
+        `${BACKEND_URL}/api/v1/blogs/${id}/bookmark`,
         {},
         {
           headers: {

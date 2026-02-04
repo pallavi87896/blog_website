@@ -1,7 +1,5 @@
 
 import { Hono } from 'hono'
-import { fromBase64, generateSalt, hashPassword, toBase64 } from './lib/password'
-import { sign,verify } from 'hono/jwt'
 import { userRouter } from './routes/user';
 import { blogRouter } from './routes/blog';
 import { cors } from "hono/cors"

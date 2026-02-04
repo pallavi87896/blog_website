@@ -4,6 +4,8 @@ import { useBlog } from "../hooks";
 import { useEffect, useState } from 'react'
 import  axios  from "axios";
 import { useNavigate } from "react-router-dom";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const EditBlog = () => {
     const navigate=useNavigate();
     const { id }=useParams();
@@ -41,7 +43,7 @@ const EditBlog = () => {
 
 async function handleUpdate() {
     await axios.put(
-         "https://backend.singhpallavi8195.workers.dev/api/v1/blogs",
+         `${BACKEND_URL}/api/v1/blogs`,
     {
       id,
       title,

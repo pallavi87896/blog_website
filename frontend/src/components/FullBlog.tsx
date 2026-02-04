@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MessageSquare, Calendar, Edit3, Trash2, Send } from "lucide-react";
 import axios from "axios";
-
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+ 
 /* ---------------- TYPES ---------------- */
 interface Comment {
   id: string;
@@ -43,7 +44,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
   async function fetchComments() {
     try {
       const res = await axios.get(
-        `https://backend.singhpallavi8195.workers.dev/api/v1/blogs/${blog.id}/comments`,
+        `${BACKEND_URL}/api/v1/blogs/${blog.id}/comments`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -66,7 +67,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
     try {
       setPostingComment(true);
       await axios.post(
-        "https://backend.singhpallavi8195.workers.dev/api/v1/blogs/comment",
+        `${BACKEND_URL}/api/v1/blogs/comment`,
         { postId: blog.id, content: commentInput },
         { headers: { Authorization: `Bearer ${token}` } }
       );

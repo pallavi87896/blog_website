@@ -1,5 +1,6 @@
 import { useEffect, useState} from 'react'
 import axios from 'axios'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export interface Blog {
     "content":string;
@@ -21,7 +22,7 @@ export const useBlog=({id}:{id:string})=>{
     const [blog,setBlog]=useState<Blog>();
 
     useEffect(()=>{
-        axios.get(`https://backend.singhpallavi8195.workers.dev/api/v1/blogs/${id}`,{
+        axios.get(`${BACKEND_URL}/api/v1/blogs/${id}`,{
             headers:{
                 Authorization:`Bearer ${localStorage.getItem("token")}`
             }
@@ -44,7 +45,7 @@ export const useBlogs=(search:string)=>{
 
     useEffect(()=>{
         setLoading(true)
-        axios.get(`https://backend.singhpallavi8195.workers.dev/api/v1/blogs/bulk`,{
+        axios.get(`${BACKEND_URL}/api/v1/blogs/bulk`,{
             params:{ search },
             headers:{
                 Authorization:`Bearer ${localStorage.getItem("token")}`
@@ -68,7 +69,7 @@ export const useBookmarks=()=>{
 
     useEffect(()=>{
         axios.get(
-      "https://backend.singhpallavi8195.workers.dev/api/v1/blogs/bookmarks",
+      `${BACKEND_URL}/api/v1/blogs/bookmarks`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
