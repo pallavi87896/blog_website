@@ -13,7 +13,7 @@ const { loading, blogs } = useBlogs(debouncedSearch);
     if(loading){
         return <div className="min-h-screen bg-slate-50/30">
             <AppBar onSearchChange={setSearch}/>
-            <main className="max-w-screen-xl mx-auto px-4 md:px-8 py-8 flex justify-center w-full">
+            <main className="max-w-screen-xl mx-auto px-4 md:px-8 py- flex justify-center w-full">
                 <div className="w-full max-w-3xl">
                     {loading?(
                         <>
@@ -45,7 +45,7 @@ const { loading, blogs } = useBlogs(debouncedSearch);
     return <div className="min-h-screen bg-slate-50/30">
         <AppBar onSearchChange={setSearch}/>
         <SearchBar onSearchChange={setSearch}/>
-       <main className="max-w-screen-xl mx-auto px-4 md:px-8 pt-28 pb-8 flex justify-center w-full">
+       <main className="max-w-screen-xl mx-auto px-4 md:px-8 pt-2 pb-8 flex justify-center w-full">
             <div className="w-full max-w-3xl">
                 {blogs.map(blog=><BlogCard
                 key={blog.id}

@@ -10,7 +10,8 @@ import { cors } from "hono/cors"
   }
 }>();
 app.use('/*',cors({
-  origin:"http://localhost:5173",
+  origin:["http://localhost:5173",
+  "https://inkly-lilac.vercel.app"],
   credentials:true
 }) 
   
