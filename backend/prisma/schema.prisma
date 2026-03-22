@@ -45,7 +45,7 @@ model Like {
 
   userLike User @relation(fields:[userId],references: [id])
   //Like.userId->User.id
-  postLike Post @relation(fields:[postId], references:[id])
+  postLike Post @relation(fields:[postId], references:[id],onDelete: Cascade)
   
   @@unique([userId,postId])
 
@@ -58,7 +58,7 @@ model Comment {
   content String
 
   userComment User @relation(fields:[userId],references:[id])
-  postComment Post @relation(fields:[postId],references:[id])
+  postComment Post @relation(fields:[postId],references:[id],onDelete: Cascade)
 }
 
 model Bookmark{
@@ -67,7 +67,7 @@ model Bookmark{
   postId String
 
   user User @relation(fields: [userId], references: [id])
-  post Post @relation(fields: [postId], references: [id])
+  post Post @relation(fields: [postId], references: [id],onDelete: Cascade)
   
   @@unique([userId,postId])
 }

@@ -8,13 +8,21 @@ import { Bookmark } from "lucide-react";
 type AppBarProps={
   onSearchChange?:(value:string)=>void
 };
+//it wants to say tht this function may or may not receive a function to handle search input
+//takes a str returns nothing
 
 export const AppBar = ({onSearchChange}:AppBarProps) => {
   const [username,setusername]=useState("User");
   const navigate=useNavigate();
+//navigate helps instead of clicking links everytime we can move pages using code
+
+//searchchange is prop destructured 
+//applying the type u just defined
 
   const [open,setOpen]=useState(false);
   useEffect(()=>{
+    //runs after component rerenders it only runs once 
+    //we need outside react  like local storage like i want tht it only gets the username only when the app loads so we choose to use useEffect
     const storedname=localStorage.getItem("username");
     if(storedname){
       setusername(storedname.toUpperCase())
@@ -28,21 +36,21 @@ export const AppBar = ({onSearchChange}:AppBarProps) => {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-slate-100">
+    <header className="sticky top-0  bg-white border-b  z-50 border-slate-100">
       <div className="max-w-screen-xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
 
         {/* LEFT */}
         <div className="flex items-center gap-6">
           <Link
             to="/blogs"
-            className="text-3xl font-serif font-bold tracking-tight"
+            className="text-4xl font-serif font-bold tracking-tighter"
           >
             Inkly
           </Link>
 
           {/* SEARCH — DESKTOP ONLY */}
         
-          <div className="hidden md:flex items-center bg-gray-100 px-4 py-2 rounded-full w-[280px]">
+          <div className=" hidden md:flex items-center bg-gray-100 px-4 py-2 rounded-full w-[280px]">
             <Search className="w-4 h-4 text-gray-500 shrink-0" />
             <input
               type="text"

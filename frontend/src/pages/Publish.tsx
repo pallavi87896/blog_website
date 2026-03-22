@@ -10,10 +10,10 @@ export const Publish = () => {
     const [description, setDescription] = useState("");
     const navigate = useNavigate();
 
-    return <div>
+    return <div className="min-h-screen bg-white">
         <AppBar/>
-        <div className="flex justify-center w-full pt-8"> 
-            <div className="max-w-screen-lg w-full">
+        <main className="max-w-screen-xl mx-auto px-4 md:px-8 pt-8 w-full"> 
+            <div className="max-w-screen-lg mx-auto w-full">
                 <input onChange={(e) => {
                     setTitle(e.target.value)
                 }} type="text" className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Title" />
@@ -35,7 +35,7 @@ export const Publish = () => {
                     Publish post
                 </button>
             </div>
-        </div>
+        </main>
     </div>
 }
 

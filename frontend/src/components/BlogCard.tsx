@@ -30,6 +30,7 @@ export const BlogCard = ({
   const calculateReadingTime = (text: string) => {
     const wordsPerMinute = 225;
     const noOfWords = text.split(/\s+/).length;
+    //splits text wherever there is sapce
     const minutes = Math.ceil(noOfWords / wordsPerMinute);
     return minutes;
   };
@@ -37,6 +38,7 @@ export const BlogCard = ({
   async function handleLike(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
+    //clicking like wont trigger blog details page
     try {
       const res = await axios.post(
         `${BACKEND_URL}/api/v1/blogs/${id}/like`,
@@ -69,15 +71,14 @@ export const BlogCard = ({
           },
         }
       );
-      setBookmarked(!bookmarked);
+      setBookmarked(prev=>!prev);
     } catch (err) {
-        setBookmarked(!bookmarked); 
         console.error("Error bookmarking post", err);
     }
   }
 
   return (
-    <div className="group p-5 border-b border-slate-100 max-w-screen-md transition-all hover:bg-slate-50/50">
+    <div className="group p-5 border-b border-slate-100 max-w-3xl transition-all hover:bg-slate-50/50">
       <Link to={`/blogs/${id}`} className="block cursor-pointer">
         <div className="flex items-center gap-2 mb-3">
           <Avatar name={authorName} />
@@ -92,7 +93,7 @@ export const BlogCard = ({
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
           <div className="md:col-span-12">
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900 leading-snug group-hover:text-slate-700 transition-colors">
+            <h2 className="text-xl md:text-2xl font-playfair text-slate-900 leading-snug font-bold group-hover:text-slate-700 transition-colors">
               {title}
             </h2>
             <p className="text-[15px] font-serif text-slate-600 leading-relaxed mt-2 line-clamp-2">

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, ArrowRight, Quote } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Quote } from 'lucide-react';
 import photo from '../assets/photo.jpg';
 import avatar from '../assets/avatar.jpg';
 import { useState } from 'react';

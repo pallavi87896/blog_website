@@ -3,6 +3,7 @@ import { BlogCard } from "../components/BlogCard";
 import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useBlogs } from "../hooks/index";
 import { useEffect, useState } from "react";
+import SearchBar from "../components/SearchBar";
 export const Blogs=()=>{
     const [search,setSearch]=useState("");
     const debouncedSearch = useDebounce(search);
@@ -10,10 +11,10 @@ const { loading, blogs } = useBlogs(debouncedSearch);
 
 
     if(loading){
-        return <div>
+        return <div className="min-h-screen bg-slate-50/30">
             <AppBar onSearchChange={setSearch}/>
-            <div className="flex justify-center">
-                <div>
+            <main className="max-w-screen-xl mx-auto px-4 md:px-8 py-8 flex justify-center w-full">
+                <div className="w-full max-w-3xl">
                     {loading?(
                         <>
                     <BlogSkeleton />
@@ -26,24 +27,26 @@ const { loading, blogs } = useBlogs(debouncedSearch);
                         <p className="text-slate-400 mt-10">No results found</p>
                     ):(
                         blogs.map((blog)=>(
-                            <BlogCard key={blog.id}
-                            id={blog.id}
-                            authorName={blog.author.name || "anonymous"}
-                title={blog.title}
-                content={blog.content}
-                publishDate={formatDate(blog.createdAt)}
-                likesCount={blog._count.likes}
-                />
+                            <BlogCard
+              key={blog.id}
+              id={blog.id}
+              authorName={blog.author.name || "Anonymous"}
+              title={blog.title}
+              content={blog.content}
+              publishDate={formatDate(blog.createdAt)}
+              likesCount={blog._count?.likes || 0}
+            />
                         ))
                     )}
                 </div>
-            </div>
+            </main>
         </div>
     }
-    return <div>
+    return <div className="min-h-screen bg-slate-50/30">
         <AppBar onSearchChange={setSearch}/>
-        <div className="flex justify-center">
-            <div>
+        <SearchBar onSearchChange={setSearch}/>
+       <main className="max-w-screen-xl mx-auto px-4 md:px-8 pt-28 pb-8 flex justify-center w-full">
+            <div className="w-full max-w-3xl">
                 {blogs.map(blog=><BlogCard
                 key={blog.id}
                     id={blog.id}
@@ -55,7 +58,7 @@ const { loading, blogs } = useBlogs(debouncedSearch);
                     likesCount={blog._count.likes}/>
                 )}
             </div>
-        </div>
+        </main>
     </div>
 }
 export function formatDate(date:string){
