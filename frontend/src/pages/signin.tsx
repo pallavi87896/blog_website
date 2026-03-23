@@ -39,7 +39,7 @@ const Signin = () => {
       <div className="w-full max-w-5xl h-full max-h-[700px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-row">
         
         {/* LEFT SIDE */}
-        <div className="relative sm:hidden md:block lg:flex w-1/2 h-full flex-col items-center justify-center p-12 text-center">
+        <div className="relative hidden md:block lg:flex w-1/2 h-full flex-col items-center justify-center p-12 text-center">
           <img
             className="absolute inset-0 h-full w-full object-cover"
             src={photo}
