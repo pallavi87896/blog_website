@@ -4,7 +4,6 @@ import { BlogSkeleton } from "../components/BlogSkeleton";
 import { useDebounce } from "../hooks/index";
 import { useBlogs } from "../hooks/index";
 import { useState } from "react";
-import SearchBar from "../components/SearchBar";
 export const Blogs=()=>{
     const [search,setSearch]=useState("");
     const debouncedSearch = useDebounce(search);
