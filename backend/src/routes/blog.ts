@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { getPrisma } from '../lib/prisma'
-import { verify } from 'hono/jwt'
 import { createPostInput,updatePostInput } from 'pallavi-common'
+import { authMiddleware } from '../middleware/auth'
 import { Prisma } from "@prisma/client"
 export const blogRouter = new Hono<{
   Bindings: {
@@ -13,26 +13,8 @@ export const blogRouter = new Hono<{
   }
 }>()
 
-
-
-
-
-// 🔐 protect all blog routes
-blogRouter.use('/*', async (c, next) => {
-  try{
-  const auth = c.req.header('authorization')||
-  c.req.header("Authorization")
-  if (!auth) return c.json({ error: 'unauthorized' }, 401)
-
-  const token = auth.split(' ')[1]
-  const payload = await verify(token, c.env.JWT_SECRET,"HS256") as { id: string }
-
-  c.set('userId', payload.id)
-  await next()
-} catch(err){
-  return c.json({error:"invalid token"},401)
-}
-})
+// protect all blog routes
+blogRouter.use('/*', authMiddleware)
 
 // CREATE BLOG
 blogRouter.post('/', async (c) => {

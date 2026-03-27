@@ -32,6 +32,8 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
   }
   //jwtdecode decodes the userid to know whetehr this particular person has already liked the post or not
 
+  //jwtdecode may throw eerors if the token expired or invalid or ill filled so it need to be wrapped in try catch so it doesnt let the app crash n manage unauthorized users
+
   
   const [comments, setComments] = useState<Comment[]>([]);
   //storing an array of comments
@@ -60,26 +62,27 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
     fetchComments();
   }, [blog.id]);
 //its a side effect like the comment changes only when the blog does
-//if we do blog here it would re render everytime anyhing changes in the blog
+//if we do blog here it would re render everytime n blog may get recreated n it wud spam api calls run agin unnecessarily
 
 
   async function postComment() {
     if (!commentInput.trim()) return;
     try {
       setPostingComment(true);
-      await axios.post(
+      await axios.post(  
         `${BACKEND_URL}/api/v1/blogs/comment`,
         { postId: blog.id, content: commentInput },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCommentInput("");
       await fetchComments();
+      //comments are updated after the new comment is successfully posted
     } catch {
       console.error("Failed to post comment");
     } finally {
       setPostingComment(false);
       //finally to ensure loading state is reset 
-      //means the  button works user v=can retry ui resets
+      //means the  button works user can retry ui resets
     }
   }
 
@@ -137,7 +140,9 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
     onClick={postComment}
     disabled={postingComment || !commentInput.trim()}
     className=" text-slate-700 disabled:text-slate-300 cursor-pointer"
+    //.trim is used to trim all the space so no one ever sends the empty string 
   >
+  
     <Send size={16} />
   </button>
   </div>
@@ -162,6 +167,7 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
                   </div>
                 ) : (
                   comments.map((c) => (
+                    //key helps is uniquely identifying each react component which item chsnged added,removed if index used it wont know hether anyhting cahnged or not
                     <div key={c.id} className="group">
                       <div className="flex items-center gap-3 mb-2">
                         <div className="h-8 w-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">

@@ -2,7 +2,7 @@ import z, { string } from 'zod';
 export const signupInput = z.object({
     email: z.string().email(),
     name: z.string().optional(),
-    password: z.string(),
+    password: z.string().min(6),
 });
 export const signinInput = z.object({
     email: z.string().email(),
@@ -10,12 +10,10 @@ export const signinInput = z.object({
 });
 export const createPostInput = z.object({
     title: string(),
-    content: string(),
-    image: z.string().optional()
+    content: string()
 });
 export const updatePostInput = z.object({
     title: z.string().optional(),
     content: z.string().optional(),
-    image: z.string().optional()
 });
 //# sourceMappingURL=index.js.map

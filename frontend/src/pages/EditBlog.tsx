@@ -19,6 +19,7 @@ const EditBlog = () => {
             setContent(blog.content)
         }
     },[blog])
+    //blog here because even a small thing changes in the blog it is edited
   return (
   <div className="max-w-3xl mx-auto pt-10">
     

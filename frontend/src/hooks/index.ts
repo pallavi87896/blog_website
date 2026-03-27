@@ -16,10 +16,14 @@ export interface Blog {
     likes:number;
     };
 }
+type Bookmark={
+    post:Blog;
+}
+//due to scalability purposes so later on when we would need author email author profile etc etc we cud add them 
 
 export const useBlog=({id}:{id:string})=>{
     const [loading,setLoading]=useState(true);
-    const [blog,setBlog]=useState<Blog>();
+    const [blog,setBlog]=useState<Blog|null>(null);
 
     useEffect(()=>{
         axios.get(`${BACKEND_URL}/api/v1/blogs/${id}`,{
@@ -55,13 +59,16 @@ export const useBlogs=(search:string)=>{
             setBlogs(response.data.posts ||[]);
             setLoading(false);
         })
-    },[search])
+        //We use || [] to ensure that blogs is always an array and prevent crashes when mapping. However, this only protects against posts being undefined. If response.data itself is undefined, it will still crash. A safer approach is to use optional chaining like response.data?.posts || []
 
+    },[search])
+//params:{search} automatically converts object -query string 
     return {
         loading,
         blogs
     }
 }
+//use debounce for lesser api calls
 
 export const useBookmarks=()=>{
     const [loading,setLoading]=useState(true);
@@ -77,7 +84,7 @@ export const useBookmarks=()=>{
       }
     )
     .then((res)=>{
-        const posts=res.data.bookmarks.map((b:any)=>b.post);
+        const posts=res.data.bookmarks?.map((b:Bookmark)=>b.post || []);
         setBookmarks(posts);
         setLoading(false);
     })
@@ -87,5 +94,14 @@ export const useBookmarks=()=>{
     })
     },[])
     return { loading,bookmarks}
+//we cud add toekns in the dependency array by storing them in react state so when the token refreshes we get the new bookmarks
+}
 
+export const useDebounce=(value:string,delay=400)=>{
+    const [debounced,setDebounced]=useState(value);
+    useEffect(()=>{
+        const id=setTimeout(()=>setDebounced(value),delay);
+        return()=>clearTimeout(id);
+    },[value,delay]);
+    return debounced
 }

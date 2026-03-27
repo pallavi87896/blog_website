@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bookmark } from "lucide-react";
 
+
+//navigate-used for logic event like traveling from page to page
+//links-used when navigation is triggered by ui element like bttond navbar menu
 type AppBarProps={
   onSearchChange?:(value:string)=>void
 };
+
 //it wants to say tht this function may or may not receive a function to handle search input
 //takes a str returns nothing
+// ? makes content reusable in multiple contexts
 
 export const AppBar = ({onSearchChange}:AppBarProps) => {
   const [username,setusername]=useState("User");
@@ -27,7 +32,7 @@ export const AppBar = ({onSearchChange}:AppBarProps) => {
     if(storedname){
       setusername(storedname.toUpperCase())
     }
-  },[]);
+  },[]);//runns only once the app mounts
 
   function logout() {
     localStorage.removeItem("token");
@@ -55,6 +60,8 @@ export const AppBar = ({onSearchChange}:AppBarProps) => {
             <input
               type="text"
               onChange={(e)=>onSearchChange?.(e.target.value)}
+              //?.(): only checks for null or undefined
+              //checks for all false values(null,undefined,false,0.)
               placeholder="Search"
               className="ml-3 bg-transparent outline-none text-sm w-full text-gray-700"
             />
